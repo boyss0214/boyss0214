@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+	PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN"
+	"http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap>
+
+	<resultMap id="faqDto" class="com.paic.mall.dto.FaqDTO">
+		<result property="id" column="id" />
+		<result property="title" column="title" />
+		<result property="content" column="content" />
+		<result property="sort" column="sort" />
+		<result property="faqType" column="faq_type" />
+		<result property="addTime" column="add_time" />
+		<result property="lastModifyTime" column="last_modify_time" />
+	</resultMap>
+
+	<select id="faq.getFaqList" resultMap="faqDto" parameterClass="java.util.Map">
+		SELECT
+		id,
+		title,
+		content,
+		sort,
+		faq_type,
+		add_time,
+		last_modify_time
+		FROM
+		tbk_faq
+		<dynamic prepend="WHERE">
+			<isNotEmpty prepend="AND" property="faqTypeList">
+				faq_type in
+				<iterate prepend="" property="faqTypeList" open="(" close=")"
+					conjunction=",">
+					#faqTypeList[]#
+				</iterate>
+			</isNotEmpty>
+		</dynamic>
+		ORDER
+		BY sort DESC
+	</select>
+
+</sqlMap>
