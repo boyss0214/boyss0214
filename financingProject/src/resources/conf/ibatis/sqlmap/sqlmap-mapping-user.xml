@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+	PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN"
+	"http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap>
+
+	<!-- FA用户集合 -->
+	<resultMap id="faUserDto" class="com.money.financing.dto.FaUserDTO">
+		<result property="id" column="ID" />
+		<result property="uName" column="U_NAME" />
+		<result property="uLoginName" column="U_LOGIN_NAME" />
+		<result property="uPassWord" column="U_PASSWORD" />
+		<result property="uNumberType" column="U_NUMBER_TYPE" />
+		<result property="uNumber" column="U_NUMBER" />
+		<result property="uRole" column="U_ROLE" />
+		<result property="uTelephone" column="U_TELEPHONE" />
+		<result property="uMobile" column="U_MOBILE" />
+		<result property="uCode" column="U_CODE" />
+		<result property="uEmail" column="U_EMAIL" />
+		<result property="uSex" column="U_SEX" />
+		<result property="uAge" column="U_AGE" />
+		<result property="uAddress" column="U_ADDRESS" />
+		<result property="uCompany" column="U_COMPANY" />
+		<result property="uRemark" column="U_REMARK" />
+		<result property="uImage" column="U_IMAGE" />
+		<result property="createDate" column="CREATE_DATE" />
+		<result property="createBy" column="CREATE_BY" />
+		<result property="updateDate" column="UPDATE_DATE" />
+		<result property="updateBy" column="UPDATE_BY" />
+		<result property="status" column="STATUS" />
+		
+	</resultMap>
+
+	<select id="user.getFaUserList" resultMap="faUserDto"
+		parameterClass="com.money.financing.vo.QueryFaUserVo">
+		SELECT * FROM FP_FA_USER u
+		WHERE u.STATUS = '1'
+		<isNotEmpty prepend="and" property = 'uLoginName'>
+			u.U_LOGIN_NAME = #uLoginName#
+		</isNotEmpty>
+		<isNotEqual prepend="and" property="id" compareValue="0" >
+			u.ID = #id# 
+		</isNotEqual>
+	</select>
+
+		
+	<insert id="user.insertFaUserInfo" parameterClass="com.money.financing.dto.FaUserDTO">
+		insert into 
+			fp_fa_user (
+					U_NAME,
+					U_LOGIN_NAME,
+					U_PASSWORD,
+					U_NUMBER_TYPE,
+					U_NUMBER,
+					U_ROLE,
+					U_TELEPHONE,
+					U_MOBILE,
+					U_CODE,
+					U_EMAIL,
+					U_SEX,
+					U_AGE,
+					U_ADDRESS,
+					U_COMPANY,
+					U_REMARK,
+					U_IMAGE,
+					CREATE_DATE,
+					CREATE_BY,
+					UPDATE_DATE,
+					UPDATE_BY,
+					STATUS
+					) 
+		values (uName,
+				#uLoginName#,
+				#uPassWord#,
+				#uNumberType#,
+				#uNumber#,
+				#uRole#,
+				#uTelephone#,
+				#uMobile#,
+				#uCode#,
+				#uEmail#,
+				#uSex#,
+				#uAge#,
+				#uAddress#,
+				#uCompany#,
+				#uRemark#,
+				#uImage#,
+				now(),
+				#createBy#,
+				now(),
+				#updateBy#,
+				'1'
+		)
+		<selectKey resultClass="int" keyProperty="id">
+			SELECT @@IDENTITY AS id
+		</selectKey>
+	</insert>
+		
+	<update id="user.updateFaUserInfo" parameterClass="com.money.financing.dto.FaUserDTO"> 
+		update fp_fa_user cub set 
+		<isNotEmpty prepend="" property = 'uName'>
+			cub.U_NAME = #uName#,
+		</isNotEmpty>
+		<isNotEmpty prepend="" property = 'uLoginName'>
+			cub.U_LOGIN_NAME = #uLoginName#,
+		</isNotEmpty>
+		<isNotEqual prepend="" property="uNumberType" compareValue="0" >
+			cub.U_NUMBER_TYPE = #uNumberType#,
+		</isNotEqual>
+		<isNotEmpty prepend="" property = 'uNumber'>
+			cub.U_NUMBER = #uNumber#,
+		</isNotEmpty>
+		<isNotEmpty prepend="" property = 'uCode'>
+			cub.U_CODE=#uCode#,
+		</isNotEmpty>
+		<isNotEmpty prepend="" property = 'uTelephone'>
+			cub.U_TELEPHONE = #uTelephone#,
+		</isNotEmpty>
+		<isNotEmpty prepend="" property = 'uMobile'>
+			cub.U_MOBILE=#uMobile#,
+		</isNotEmpty>
+		<isNotEmpty prepend="" property = 'uEmail'>
+			cub.U_EMAIL = #uEmail#,
+		</isNotEmpty>
+		<isNotEqual prepend="" property="uSex" compareValue="0" >
+			cub.U_SEX=#uSex#,
+		</isNotEqual>
+		<isNotEqual prepend="" property="uAge" compareValue="0" >
+			cub.U_AGE=#uAge#,
+		</isNotEqual>
+		<isNotEmpty prepend="" property = 'uAddress'>
+			cub.U_ADDRESS=#uAddress#,
+		</isNotEmpty>
+		<isNotEmpty prepend="" property = 'uCompany'>
+			cub.U_COMPANY=#uCompany#,
+		</isNotEmpty>
+		<isNotEmpty prepend="" property = 'uRemark'>
+			cub.U_REMARK=#uRemark#,
+		</isNotEmpty>
+		<isNotEmpty prepend="" property = 'uImage'>
+			cub.U_IMAGE=#uImage#,
+		</isNotEmpty>
+					cub.UPDATE_DATE=now(),
+					cub.UPDATE_BY=#updateBy#
+				where cub.id = #id#
+	</update>
+
+	<!-- 客户基础信息集合 -->
+	<resultMap id="clientUserBaseDto" class="com.money.financing.dto.ClientUserBaseDTO">
+		<result property="id" column="ID" />
+		<result property="cName" column="C_NAME" />
+		<result property="cSex" column="C_SEX" />
+		<result property="cAge" column="C_AGE" />
+		<result property="cNumberType" column="C_NUMBER_TYPE" />
+		<result property="cNumber" column="C_NUMBER" />
+		<result property="cAsset" column="C_ASSET" />
+		<result property="cLevel" column="C_LEVEL" />
+		<result property="cAddress" column="C_ADDRESS" />
+		<result property="cTelephone" column="C_TELEPHONE" />
+		<result property="cMobile" column="C_MOBILE" />
+		<result property="cEmail" column="C_EMAIL" />
+		<result property="cRemark" column="C_REMARK" />
+		<result property="cPaCode" column="C_PA_CODE" />
+		<result property="createDate" column="CREATE_DATE" />
+		<result property="createBy" column="CREATE_BY" />
+		<result property="updateDate" column="UPDATE_DATE" />
+		<result property="updateBy" column="UPDATE_BY" />
+		<result property="status" column="STATUS" />
+	</resultMap>
+
+<!-- 查询客户列表 -->
+	<select id="user.getClientUserBaseInfoList" resultMap="clientUserBaseDto"
+		parameterClass="com.money.financing.vo.QueryClientUserVo">
+		SELECT * FROM fp_client_user_base cub
+		where  cub.STATUS = '1' 
+		<isNotEmpty prepend="and" property = 'cNumber'>
+			cub.C_NUMBER = #cNumber# 
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property = 'cName'>
+			cub.C_NAME like '%$cName$%' 
+		</isNotEmpty>
+		<isNotEqual prepend="and" property="cLevel" compareValue="0" >
+			cub.C_LEVEL = #cLevel# 
+		</isNotEqual>
+		<isNotEmpty prepend="and" property = 'cMobile'>
+			cub.C_MOBILE = #cMobile# 
+		</isNotEmpty>
+		LIMIT  #start#,#pageSize# 
+	</select>
+	<!-- 查询记录数 -->
+	<select id="user.getClientUserBaseInfoListCount" resultClass="java.lang.Integer" 
+		parameterClass="com.money.financing.vo.QueryClientUserVo">
+		SELECT count(*) FROM fp_client_user_base cub
+		where  cub.STATUS = '1' 
+		<isNotEmpty prepend="and" property = 'cNumber'>
+			cub.C_NUMBER = #cNumber# 
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property = 'cName'>
+			cub.C_NAME like '%$cName$%' 
+		</isNotEmpty>
+		<isNotEqual prepend="and" property="cLevel" compareValue="0" >
+			cub.C_LEVEL = #cLevel# 
+		</isNotEqual>
+		<isNotEmpty prepend="and" property = 'cMobile'>
+			cub.C_MOBILE = #cMobile# 
+		</isNotEmpty>
+	</select>
+	
+	<!-- 根据ID查找客户信息 -->
+	<select id="user.searchClientUserBaseById" resultMap="clientUserBaseDto"
+		parameterClass="java.lang.Integer">
+		SELECT * FROM fp_client_user_base cub
+		where cub.STATUS = '1' and cub.ID = #id# 
+	</select>
+	
+	
+	<insert id="user.insertClientUserBase" parameterClass="com.money.financing.dto.ClientUserBaseDTO">
+		insert into 
+			fp_client_user_base (
+					C_NAME,
+					C_SEX,
+					C_AGE,
+					C_NUMBER_TYPE,
+					C_NUMBER,
+					C_ASSET,
+					C_LEVEL,
+					C_ADDRESS,
+					C_TELEPHONE,
+					C_MOBILE,
+					C_EMAIL,
+					C_REMARK,
+					C_PA_CODE,
+					CREATE_DATE,
+					CREATE_BY,
+					UPDATE_DATE,
+					UPDATE_BY,
+					STATUS
+					) 
+		values (#cName#,
+				#cSex#,
+				#cAge#,
+				#cNumberType#,
+				#cNumber#,
+				#cAsset#,
+				#cLevel#,
+				#cAddress#,
+				#cTelephone#,
+				#cMobile#,
+				#cEmail#,
+				#cRemark#,
+				#cPaCode#,
+				now(),
+				#createBy#,
+				now(),
+				#updateBy#,
+				'1'
+		)
+		<selectKey resultClass="int" keyProperty="id">
+			SELECT @@IDENTITY AS id
+		</selectKey>
+	</insert>
+		
+	<update id="user.updateClientUserBaseById" parameterClass="com.money.financing.dto.ClientUserBaseDTO"> 
+		update fp_client_user_base cub set 
+					cub.C_NAME = #cName#,
+					cub.C_SEX = #cSex#,
+					cub.C_AGE = #cAge#,
+					cub.C_NUMBER_TYPE = #cNumberType#,
+					cub.C_NUMBER = #cNumber#,
+					cub.C_ASSET = #cAsset#,
+					cub.C_LEVEL=#cLevel#,
+					cub.C_ADDRESS=#cAddress#,
+					cub.C_TELEPHONE=#cTelephone#,
+					cub.C_MOBILE=#cMobile#,
+					cub.C_EMAIL=#cEmail#,
+					cub.UPDATE_DATE=now(),
+					cub.UPDATE_BY=#updateBy#
+				where cub.id = #id#
+	
+	</update>
+</sqlMap>

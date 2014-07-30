@@ -10,6 +10,9 @@
 	<!-- Identify all SQL Map XML files to be loaded by this SQL map. Notice 
 		the paths are relative to the classpath. -->
 
-	<sqlMap resource="conf/ibatis/sqlmap/sqlmap-mapping-Faq.xml" />
-
+	<sqlMap resource="conf/ibatis/sqlmap/sqlmap-mapping-user.xml" />
+	<sqlMap resource="conf/ibatis/sqlmap/sqlmap-mapping-project.xml" />
+	<sqlMap resource="conf/ibatis/sqlmap/sqlmap-mapping-clientVisit.xml" />
+	<sqlMap resource="conf/ibatis/sqlmap/sqlmap-mapping-clientProject.xml" />
+	<sqlMap resource="conf/ibatis/sqlmap/sqlmap-mapping-projectLike.xml" />
 </sqlMapConfig>

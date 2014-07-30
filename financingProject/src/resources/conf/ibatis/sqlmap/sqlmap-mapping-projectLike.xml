@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+	PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN"
+	"http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap>
+
+	
+
+	<!-- 收藏产品关系集合 -->
+	<resultMap id="projectLikeDto" class="com.money.financing.dto.ProjectLikeDTO">
+		<result property="id" column="ID" />
+		<result property="pId" column="P_ID" />
+		<result property="uId" column="U_ID" />
+		<result property="pName" column="P_NAME" />
+		<result property="pProfit" column="P_PROFIT" />
+		<result property="pDueTime" column="P_DUE_TIME" />
+		<result property="pComment" column="P_COMMENT" />
+		<result property="likeType" column="LIKE_TYPE" />
+		<result property="createDate" column="CREATE_DATE" />
+		<result property="createBy" column="CREATE_BY" />
+		<result property="updateDate" column="UPDATE_DATE" />
+		<result property="updateBy" column="UPDATE_BY" />
+		<result property="status" column="STATUS" />
+	</resultMap>
+		
+	
+	<!-- 查找所有收藏byId-->
+	<select id="pl.searchProjectByCode" resultMap="projectLikeDto"
+		parameterClass="java.lang.Integer">
+		SELECT pl.*,p.p_name,p.p_Profit,p.P_DUE_TIME,p.p_Comment FROM fp_project_like pl LEFT JOIN fp_project p ON pl.P_ID = p.id
+		where pl.STATUS = '1' 
+		<isNotEmpty prepend="and" property = 'value'>
+			pl.U_ID = #value#
+		</isNotEmpty>
+		order by pl.CREATE_DATE desc
+	</select>
+
+	<!-- 新增产品 -->
+	<insert id="pl.insertProjectLikeInfo" parameterClass="com.money.financing.dto.ProjectLikeDTO">
+		insert into 
+			fp_project_like (
+					P_ID,
+					U_ID,
+					LIKE_TYPE,
+					CREATE_DATE,
+					CREATE_BY,
+					UPDATE_DATE,
+					UPDATE_BY,
+					STATUS
+					) 
+		values (#pId#,
+				#uId#,
+				'1',
+				now(),
+				#createBy#,
+				now(),
+				#updateBy#,
+				'1'
+		)
+		<selectKey resultClass="int" keyProperty="id">
+			SELECT @@IDENTITY AS id
+		</selectKey>
+	</insert>
+	
+	<!-- 删除产品 -->
+	<delete id="pl.deleteProjectLikeById" parameterClass="java.lang.Integer"> 
+		delete  from fp_project_like where id = #value#
+	</delete>
+	
+</sqlMap>

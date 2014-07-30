@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+	PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN"
+	"http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap>
+
+	
+
+	<!-- 产品集合 -->
+	<resultMap id="projectDto" class="com.money.financing.dto.ProjectDTO">
+		<result property="id" column="ID" />
+		<result property="pCode" column="P_CODE" />
+		<result property="pName" column="P_NAME" />
+		<result property="pType" column="P_TYPE" />
+		<result property="pProfit" column="P_PROFIT" />
+		<result property="pFrequencyOpen" column="P_FREQUENCY_OPEN" />
+		<result property="pDueTime" column="P_DUE_TIME" />
+		<result property="pSummary" column="P_SUMMARY" />
+		<result property="pComment" column="P_COMMENT" />
+		<result property="pCount" column="P_COUNT" />
+		<result property="pMinimumAmount" column="P_MINIMUM_AMOUNT" />
+		<result property="pAssignmentType" column="P_ASSIGNMENT_TYPE" />
+		<result property="pSignType" column="P_SIGN_TYPE" />
+		<result property="pAgentCompany" column="P_AGENT_COMPANY" />
+		<result property="pSaleTimeStart" column="P_SALE_TIME_START" />
+		<result property="pSaleTimeEnd" column="P_SALE_TIME_END" />
+		<result property="pManager" column="P_MANAGER" />
+		<result property="createDate" column="CREATE_DATE" />
+		<result property="createBy" column="CREATE_BY" />
+		<result property="updateDate" column="UPDATE_DATE" />
+		<result property="updateBy" column="UPDATE_BY" />
+		<result property="status" column="STATUS" />
+		<result property="pPublicStatus" column="P_PUBLIC_STATUS" />
+		<result property="pImageUrl" column="P_IMAGE_URL" />
+		<result property="pSaleStutas" column="P_SALE_STATUS" />
+	</resultMap>
+	
+	<select id="crm.searchProjectById" resultMap="projectDto"
+		parameterClass="java.lang.Integer">
+		SELECT * FROM FP_PROJECT p
+		where p.STATUS = '1' and  p.ID = #id# 
+	</select>
+	<!-- 根据产品编码查找 -->
+	<select id="crm.searchProjectByCode" resultMap="projectDto"
+		parameterClass="java.lang.String">
+		SELECT * FROM FP_PROJECT p
+		where p.STATUS = '1' and p.P_CODE = #pCode#
+	</select>
+
+	<select id="crm.getProjectList" resultMap="projectDto"
+		parameterClass="com.money.financing.vo.QueryProjectVo">
+		SELECT * FROM FP_PROJECT p
+		where p.STATUS = '1'
+		<isNotEmpty prepend="and" property = 'pCode'>
+			p.P_CODE = #pCode# 
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property = 'pName'>
+			p.P_NAME like '%$pName$%' 
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property = 'pType'>
+			p.P_TYPE = #pType#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property = 'pAssignmentType'>
+			p.P_ASSIGNMENT_TYPE = #pAssignmentType#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property = 'pSignType'>
+			p.P_SIGN_TYPE = #pSignType#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property = 'pAgentCompany'>
+			p.P_AGENT_COMPANY = #pAgentCompany#
+		</isNotEmpty>
+		<isEqual prepend="and" property="SaleTimeType" compareValue="1" >
+			<![CDATA[(p.P_SALE_TIME_START > #pSaleTimeStartStr#||' 00:00:00' or p.P_SALE_TIME_END < #pSaleTimeEndStr#||' 23:59:59')]]>
+		</isEqual>
+		<isEqual prepend="and" property="SaleTimeType" compareValue="2" >
+			<![CDATA[p.P_SALE_TIME_START > #pSaleTimeStartStr#||' 00:00:00']]>
+		</isEqual>
+		<isEqual prepend="and" property="SaleTimeType" compareValue="3">
+			<![CDATA[p.P_SALE_TIME_END < #pSaleTimeEndStr#||' 23:59:59']]>
+		</isEqual>
+		LIMIT  #start#,#pageSize# 
+	</select>
+	<!-- 统计产品count -->
+	<select id="crm.getProjectListCount" resultClass="java.lang.Integer" parameterClass="com.money.financing.vo.QueryProjectVo">
+		SELECT count(*) FROM FP_PROJECT p
+		where p.STATUS = '1'
+		<isNotEmpty prepend="and" property = 'pCode'>
+			p.P_CODE = #pCode# 
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property = 'pName'>
+			p.P_NAME like '%$pName$%' 
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property = 'pType'>
+			p.P_TYPE = #pType#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property = 'pAssignmentType'>
+			p.P_ASSIGNMENT_TYPE = #pAssignmentType#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property = 'pSignType'>
+			p.P_SIGN_TYPE = #pSignType#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property = 'pAgentCompany'>
+			p.P_AGENT_COMPANY = #pAgentCompany#
+		</isNotEmpty>
+		<isNotEqual prepend="and" property="pPublicStatus" compareValue="0" >
+			p.P_PUBLIC_STATUS = #pPublicStatus#
+		</isNotEqual>
+		<isEqual prepend="and" property="SaleTimeType" compareValue="1" >
+			<![CDATA[(p.P_SALE_TIME_START > #pSaleTimeStartStr#||' 00:00:00' or p.P_SALE_TIME_END < #pSaleTimeEndStr#||' 23:59:59')]]>
+		</isEqual>
+		<isEqual prepend="and" property="SaleTimeType" compareValue="2" >
+			<![CDATA[p.P_SALE_TIME_START > #pSaleTimeStartStr#||' 00:00:00']]>
+		</isEqual>
+		<isEqual prepend="and" property="SaleTimeType" compareValue="3" >
+			<![CDATA[p.P_SALE_TIME_END < #pSaleTimeEndStr#||' 23:59:59']]>
+		</isEqual>
+		
+	</select>
+	<!-- 新增产品 -->
+	<insert id="crm.insertProject" parameterClass="com.money.financing.dto.ProjectDTO">
+		insert into 
+			FP_PROJECT (
+					P_CODE,
+					P_NAME,
+					P_TYPE,
+					P_PROFIT,
+					P_FREQUENCY_OPEN,
+					P_DUE_TIME,
+					P_SUMMARY,
+					P_COMMENT,
+					P_COUNT,
+					P_MINIMUM_AMOUNT,
+					P_ASSIGNMENT_TYPE,
+					P_SIGN_TYPE,
+					P_AGENT_COMPANY,
+					P_SALE_TIME_START,
+					P_SALE_TIME_END,
+					P_MANAGER,
+					CREATE_DATE,
+					CREATE_BY,
+					UPDATE_DATE,
+					UPDATE_BY,
+					STATUS,
+					P_PUBLIC_STATUS,
+					P_IMAGE_URL,
+					P_SALE_STATUS
+					) 
+		values (#pCode#,
+				#pName#,
+				#pType#,
+				#pProfit#,
+				#pFrequencyOpen#,
+				#pDueTime#,
+				#pSummary#,
+				#pComment#,
+				#pCount#,
+				#pMinimumAmount#,
+				#pAssignmentType#,
+				#pSignType#,
+				#pAgentCompany#,
+				#pSaleTimeStart#,
+				#pSaleTimeEnd#,
+				#pManager#,
+				now(),
+				#createBy#,
+				now(),
+				#updateBy#,
+				'1',
+				#pPublicStatus#,
+				#pImageUrl#,
+				#pSaleStutas#
+		)
+		<selectKey resultClass="int" keyProperty="id">
+			SELECT @@IDENTITY AS id
+		</selectKey>
+	</insert>
+	
+	<!-- 更新产品 -->
+	<update id="crm.updateProjectById" parameterClass="com.money.financing.dto.ProjectDTO"> 
+		update FP_PROJECT p set 
+					P_CODE = #pCode#,
+					P_NAME = #pName#,
+					P_TYPE = #pType#,
+					P_PROFIT = #pProfit#,
+					P_FREQUENCY_OPEN = #pFrequencyOpen#,
+					P_DUE_TIME = #pDueTime#,
+					P_SUMMARY=#pSummary#,
+					P_COMMENT=#pComment#,
+					P_COUNT=#pCount#,
+					P_MINIMUM_AMOUNT=#pMinimumAmount#,
+					P_ASSIGNMENT_TYPE=#pAssignmentType#,
+					P_SIGN_TYPE=#pSignType#,
+					P_AGENT_COMPANY=#pAgentCompany#,
+					P_SALE_TIME_START=#pSaleTimeStart#,
+					P_SALE_TIME_END=#pSaleTimeEnd#,
+					P_MANAGER=#pManager#,
+					P_PUBLIC_STATUS=#pPublicStatus#,
+					P_IMAGE_URL=#pImageUrl#,
+					P_SALE_STATUS=#pSaleStutas#,
+					UPDATE_DATE=now(),
+					UPDATE_BY=#updateBy#
+					
+				where p.id = #id#
+	
+	</update>
+	
+</sqlMap>

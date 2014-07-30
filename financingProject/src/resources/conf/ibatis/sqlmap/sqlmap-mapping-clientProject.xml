@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+	PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN"
+	"http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap>
+
+	
+	<!-- 客户拜访信息集合 -->
+	<resultMap id="clientProjectDto" class="com.money.financing.dto.ClientProjectDTO">
+		<result property="id" column="ID" />
+		<result property="cpCUserId" column="CP_C_USER_ID" />
+		<result property="cpProjectCode" column="CP_PROJECT_CODE" />
+		<result property="uCode" column="U_CODE" />
+		<result property="cpShare" column="CP_SHARE" />
+		<result property="cpValue" column="CP_VALUE" />
+		<result property="cpGain" column="CP_GAIN" />
+		<result property="cpProjectStatus" column="CP_PROJECT_STATUS" />
+		<result property="createDate" column="CREATE_DATE" />
+		<result property="createBy" column="CREATE_BY" />
+		<result property="updateDate" column="UPDATE_DATE" />
+		<result property="updateBy" column="UPDATE_BY" />
+		<result property="status" column="STATUS" />
+	</resultMap>
+
+
+
+
+
+<!-- 查询客户产品列表 -->
+	<select id="visit.getClientProjectList" resultMap="clientProjectDto"
+		parameterClass="com.money.financing.vo.QueryClientProjectVo">
+		SELECT * FROM fp_client_project t
+		where  t.STATUS = '1' and t.CP_C_USER_ID = #cpCUserId# and t.U_CODE = #uCode# 
+		order by t.UPDATE_DATE desc
+		LIMIT  #start#,#pageSize# 
+	</select>
+	<!-- 查询记录数 -->
+	<select id="visit.getClientProjectListCount" resultClass="java.lang.Integer" 
+		parameterClass="com.money.financing.vo.QueryClientProjectVo">
+		SELECT count(*) FROM fp_client_project t
+		where   t.STATUS = '1' and t.CP_C_USER_ID = #cpCUserId# and t.U_CODE = #uCode# 
+	</select>
+	
+	
+	<!-- 新增产品 -->
+	<insert id="visit.insertClientProject" parameterClass="com.money.financing.dto.ClientProjectDTO">	
+		insert into  fp_client_project (
+						CP_C_USER_ID,
+						CP_PROJECT_CODE,
+						U_CODE,
+						CP_SHARE,
+						CP_VALUE,
+						CP_GAIN,
+						CP_PROJECT_STATUS,
+						CREATE_DATE,
+						CREATE_BY,
+						UPDATE_DATE,
+						UPDATE_BY,
+						STATUS
+					) 
+			values (
+				#cpCUserId#,
+				#cpProjectCode#,
+				#uCode#,
+				#cpShare#,
+				#cpValue#,
+				#cpGain#,
+				#cpProjectStatus#,
+				now(),
+				#createBy#,
+				now(),
+				#updateBy#,
+				'1'
+		)
+		<selectKey resultClass="int" keyProperty="id">
+			SELECT @@IDENTITY AS id
+		</selectKey>
+	</insert>
+	
+	<!-- 更新产品 -->
+	<update id="visit.updateClientProjectById" parameterClass="com.money.financing.dto.ClientProjectDTO"> 
+		update fp_client_project p set 
+					CP_C_USER_ID = #cpCUserId#,
+					CP_PROJECT_CODE = #cpProjectCode#,
+					U_CODE = #uCode#,
+					CP_SHARE = #cpShare#,
+					CP_VALUE = #cpValue#,
+					CP_GAIN = #cpGain#,
+					CP_PROJECT_STATUS =#cpProjectStatus#,
+					UPDATE_DATE=now(),
+					UPDATE_BY=#updateBy#
+				where p.id = #id#
+	
+	</update>
+
+</sqlMap>

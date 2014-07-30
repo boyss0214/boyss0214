@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+	PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN"
+	"http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap>
+
+	
+	<!-- 客户拜访信息集合 -->
+	<resultMap id="clientVisitDto" class="com.money.financing.dto.ClientVisitDTO">
+		<result property="id" column="ID" />
+		<result property="cvDate" column="CV_DATE" />
+		<result property="cvType" column="CV_TYPE" />
+		<result property="uCode" column="U_CODE" />
+		<result property="cvCUserId" column="CV_C_USER_ID" />
+		<result property="cvRemark" column="CV_REMARK" />
+		<result property="cvPCode" column="CV_P_CODE" />
+		<result property="createDate" column="CREATE_DATE" />
+		<result property="createBy" column="CREATE_BY" />
+		<result property="updateDate" column="UPDATE_DATE" />
+		<result property="updateBy" column="UPDATE_BY" />
+		<result property="status" column="STATUS" />
+	</resultMap>
+
+
+
+
+
+<!-- 查询拜访列表 -->
+	<select id="visit.getClientVisitList" resultMap="clientVisitDto"
+		parameterClass="com.money.financing.vo.QueryClientVisitVo">
+		SELECT * FROM fp_client_visit cv
+		where  cv.STATUS = '1' and cv.CV_C_USER_ID = #cvCUserId# and cv.U_CODE = #uCode# 
+		order by cv.CV_DATE desc
+		LIMIT  #start#,#pageSize# 
+	</select>
+	<!-- 查询记录数 -->
+	<select id="visit.getClientVisitListCount" resultClass="java.lang.Integer" 
+		parameterClass="com.money.financing.vo.QueryClientVisitVo">
+		SELECT count(*) FROM fp_client_visit cv
+		where  cv.STATUS = '1' and cv.CV_C_USER_ID = #cvCUserId# and cv.U_CODE = #uCode#
+	</select>
+
+
+<!-- 新增产品 -->
+	<insert id="visit.insertClientVisit" parameterClass="com.money.financing.dto.ClientVisitDTO">	
+		insert into  fp_client_visit (
+						CV_DATE,
+						CV_TYPE,
+						U_CODE,
+						CV_C_USER_ID,
+						CV_REMARK,
+						CV_P_CODE,
+						CREATE_DATE,
+						CREATE_BY,
+						UPDATE_DATE,
+						UPDATE_BY,
+						STATUS
+					) 
+			values (
+				#cvDate#,
+				#cvType#,
+				#uCode#,
+				#cvCUserId#,
+				#cvRemark#,
+				#cvPCode#,
+				now(),
+				#createBy#,
+				now(),
+				#updateBy#,
+				'1'
+		)
+		<selectKey resultClass="int" keyProperty="id">
+			SELECT @@IDENTITY AS id
+		</selectKey>
+	</insert>
+	
+	<!-- 更新产品 -->
+	<update id="visit.updateClientVisitById" parameterClass="com.money.financing.dto.ClientVisitDTO"> 
+		update fp_client_visit p set 
+					CV_DATE = #cvDate#,
+					CV_TYPE = #cvType#,
+					U_CODE = #uCode#,
+					CV_C_USER_ID = #cvCUserId#,
+					CV_P_CODE = #cvPCode#,
+					CV_REMARK = #cvRemark#,
+					UPDATE_DATE=now(),
+					UPDATE_BY=#updateBy#
+				where p.id = #id#
+	
+	</update>
+
+
+</sqlMap>

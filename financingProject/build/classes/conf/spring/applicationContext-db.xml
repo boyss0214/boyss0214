@@ -13,9 +13,9 @@
 		<property name="driverClass">
 			<value>com.mysql.jdbc.Driver</value>
 		</property>
-		<property name="jdbcUrl" value="jdbc:mysql://${jdbc.connectUrl}?useUnicode=true&amp;characterEncoding=utf-8&amp;zeroDateTimeBehavior=convertToNull&amp;transformedBitIsBoolean=true" />
-		<property name="user" value="${jdbc.username}" />
-		<property name="password" value="${jdbc.password}" />
+		<property name="jdbcUrl" value="jdbc:mysql://127.0.0.1:3306/financing_product?useUnicode=true&amp;characterEncoding=utf-8&amp;zeroDateTimeBehavior=convertToNull&amp;transformedBitIsBoolean=true" />
+		<property name="user" value="root" />
+		<property name="password" value="123456" />
 		<property name="maxPoolSize" value="300" />
 		<property name="minPoolSize" value="12" />
 		<property name="maxIdleTime" value="9600000" />

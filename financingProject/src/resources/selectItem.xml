@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<selectItem>
+	<!-- 销售类型 -->
+	<pSaleStutas>
+		<item value='1'>未开始</item>
+		<item value='2'>募集中</item>
+		<item value='3'>已募满</item>
+	</pSaleStutas>
+	<!-- 产品类型 -->
+	<pType>
+		<item value='1'>现金</item>
+		<item value='2'>二级市场</item>
+		<item value='3'>另类投资</item>
+		<item value='4'>主题基金</item>
+	</pType>
+	<!-- 分配方式 -->
+	<pAssignmentType>
+		<item value='1'>自然半年分配方式</item>
+		<item value='2'>自然半年分配方式2</item>
+	</pAssignmentType>
+	<!-- 签约方式 -->
+	<pSignType>
+		<item value='1'>资管计划</item>
+	</pSignType>
+	<!-- 代理公司 -->
+	<pAgentCompany>
+		<item value='1'>诺亚</item>
+		<item value='2'>戈菲</item>
+		<item value='3'>xx银行</item>
+	</pAgentCompany>
+	<!-- 性别 -->
+	<sex>
+		<item value='1'>男</item>
+		<item value='2'>女</item>
+		<item value='3'>隐私</item>
+	</sex>
+	<!--客户等级 -->
+	<clientLevel>
+		<item value='1'>A级</item>
+		<item value='2'>B级</item>
+		<item value='3'>C级</item>
+	</clientLevel>
+	<!--证件类型 -->
+	<numberTypeSelect>
+		<item value='1'>身份证</item>
+		<item value='2'>护照</item>
+		<item value='3'>驾照</item>
+	</numberTypeSelect>
+	<!--拜访方式 -->
+	<cvTypeSelect>
+		<item value='1'>电话拜访</item>
+		<item value='2'>上门拜访</item>
+		<item value='3'>网络拜访</item>
+		<item value='4'>售后服务</item>
+	</cvTypeSelect>
+	<!--客户产品当前状态 -->
+	<cpProjectStatusSelect>
+		<item value='1'>成单</item>
+		<item value='2'>促单</item>
+		<item value='3'>推单</item>
+	</cpProjectStatusSelect>
+	<!-- 产品发布状态 -->
+	<pPublicStatusSelect>
+		<item value='1'>未发布</item>
+		<item value='2'>已发布</item>
+	</pPublicStatusSelect>
+</selectItem>

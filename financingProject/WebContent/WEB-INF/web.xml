@@ -10,12 +10,13 @@
   <listener>
     <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
   </listener>
+  <!-- 字符集过滤 -->
   <filter>
-    <filter-name>encodingfilter</filter-name>
-    <filter-class>com.paic.mall.web.filter.EncodingFilter</filter-class>
+    <filter-name>characterEncodingfilter</filter-name>
+    <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
     <init-param>
       <param-name>encoding</param-name>
-      <param-value>UTF8</param-value>
+      <param-value>UTF-8</param-value>
     </init-param>
     <init-param>
       <param-name>forceEncoding</param-name>
@@ -23,9 +24,23 @@
     </init-param>
   </filter>
   <filter-mapping>
-    <filter-name>encodingfilter</filter-name>
+    <filter-name>characterEncodingfilter</filter-name>
     <url-pattern>/*</url-pattern>
   </filter-mapping>
+  
+  <!-- 未登录用户过滤 -->
+  <filter>
+    <filter-name>loginFilter</filter-name>
+    <filter-class>com.money.financing.web.filter.LoginFilter</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>loginFilter</filter-name>
+    <url-pattern>*.do</url-pattern>
+    <url-pattern>*.jsp</url-pattern>
+    <url-pattern>*.html</url-pattern>
+    <url-pattern>*.shtml</url-pattern>
+  </filter-mapping>
+  
   <servlet>
     <servlet-name>annomvc</servlet-name>
     <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
@@ -34,6 +49,7 @@
   <servlet-mapping>
     <servlet-name>annomvc</servlet-name>
     <url-pattern>*.shtml</url-pattern>
+    <url-pattern>*.do</url-pattern>
   </servlet-mapping>
   <welcome-file-list>
     <welcome-file>index.jsp</welcome-file>
@@ -50,4 +66,5 @@
     <error-code>404</error-code>
     <location>/error.html</location>
   </error-page>
+ 
 </web-app>
